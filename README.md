@@ -1,82 +1,176 @@
-# SecureTaskMgmt
+# 🚀 Secure Task Management System
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+A full-stack **role-based access control (RBAC) Task Management System** built with **Nx monorepo**, **NestJS (backend)**, and **Angular (frontend)**.  
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is almost ready ✨.
+This project demonstrates **multi-role access**, **JWT authentication**, **audit logging**, and **task categorization**.
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/getting-started/tutorials/angular-monorepo-tutorial?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+---
 
-## Finish your CI setup
+## 🔧 Setup Instructions
 
-[Click here to finish setting up your workspace!](https://cloud.nx.app/connect/uMr8FrLXvO)
+### 1. Clone the repo
+```bash
+git clone https://github.com/kishoreselvaraju/task-management-system
+cd secure-task-mgmt
+
+2. Install dependencies
+npm install
+
+3. Environment Variables
+
+Create .env files in project root or directly in apps/api/.
+
+apps/api/.env
+
+JWT_SECRET=dev-secret
+DB_TYPE=sqlite
+DB_NAME=db.sqlite
+DB_SYNC=true
 
 
-## Run tasks
+JWT_SECRET: secret key for signing JWTs.
 
-To run the dev server for your app, use:
+DB_TYPE: database type (default: sqlite).
 
-```sh
+DB_NAME: database filename.
+
+DB_SYNC: auto-sync entities (dev only).
+
+4. Run backend (NestJS API)
+npx nx serve api
+
+
+Backend runs on http://localhost:3000/api
+
+5. Run frontend (Angular dashboard)
 npx nx serve dashboard
-```
-
-To create a production bundle:
-
-```sh
-npx nx build dashboard
-```
-
-To see all available targets to run for a project, run:
-
-```sh
-npx nx show project dashboard
-```
-
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
-
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Add new projects
-
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
-
-Use the plugin's generator to create new projects.
-
-To generate a new application, use:
-
-```sh
-npx nx g @nx/angular:app demo
-```
-
-To generate a new library, use:
-
-```sh
-npx nx g @nx/angular:lib mylib
-```
-
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
-
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+Frontend runs on http://localhost:4200
 
-## Install Nx Console
+🏗 Architecture Overview
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+This project uses Nx Monorepo to manage both frontend and backend in one workspace.
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+secure-task-mgmt/
+├── apps/
+│   ├── api/         # NestJS backend (Auth, Tasks, Audit APIs)
+│   └── dashboard/   # Angular frontend (Login, Tasks, Audit UI)
+├── libs/            # Shared libraries (if needed in future)
+├── nx.json
+├── package.json
+└── tsconfig.base.json
 
-## Useful links
+Why Nx?
 
-Learn more:
+Unified tooling for frontend + backend.
 
-- [Learn more about this workspace setup](https://nx.dev/getting-started/tutorials/angular-monorepo-tutorial?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+Shared libraries/modules across apps.
 
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+Built-in Jest, ESLint, and CI/CD support.
+
+ Data Model
+Entities
+
+User
+
+id, email, password, role, organizationId
+
+Task
+
+id, title, description, status, category, ownerId, organizationId
+
+AuditLog
+
+id, userId, action, resource, createdAt
+
+Organization
+
+id, name
+
+ERD
+erDiagram
+    User ||--o{ Task : "owns"
+    User ||--o{ AuditLog : "triggers"
+    Organization ||--o{ User : "has"
+    Organization ||--o{ Task : "manages"
+    Task ||--o{ AuditLog : "is logged in"
+
+🔐 Access Control (RBAC)
+Roles
+
+Admin
+
+Full access to tasks, users, audit logs.
+
+Owner
+
+Manage tasks in their organization, view audit logs.
+
+Viewer
+
+Read-only access to tasks.
+
+JWT Auth
+
+Login returns a JWT with user id, email, role, organizationId.
+
+Each request validates token via Authorization: Bearer <token>.
+
+Guards enforce role-based access at controller level.
+
+Example JWT payload:
+
+{
+  "sub": "user-123",
+  "email": "admin@acme.com",
+  "role": "ADMIN",
+  "organizationId": "org-1",
+  "iat": 1695400000,
+  "exp": 1695486400
+}
+
+📡 API Documentation
+Auth
+POST /api/auth/login
+Request:
+{ "email": "admin@acme.com", "password": "password123" }
+
+Response:
+{ "access_token": "<JWT>" }
+
+Tasks
+GET /api/tasks
+
+Returns tasks for current user’s organization.
+
+Response:
+[
+  { "id": "1", "title": "Setup CI/CD", "category": "Work", "status": "NEW" }
+]
+
+POST /api/tasks
+
+Create a new task.
+
+Request:
+{ "title": "Finish Docs", "category": "Work" }
+
+Response:
+{ "id": "2", "title": "Finish Docs", "status": "NEW" }
+
+Audit Logs
+GET /api/audit-log
+
+Admin/Owner only. Returns action history.
+
+Response:
+[
+  {
+    "id": 1,
+    "userId": "123",
+    "action": "create_task",
+    "resource": "task:1",
+    "createdAt": "2025-09-21T10:00:00Z"
+  }
+]
