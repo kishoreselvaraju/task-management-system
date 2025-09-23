@@ -1,0 +1,16 @@
+<nav *ngIf="isLoggedIn()" class="navbar">
+  <button routerLink="/tasks" routerLinkActive="active">Tasks</button>
+  <button *ngIf="isAdminOrOwner()" routerLink="/audit" routerLinkActive="active">Audit</button>
+
+  <span class="user-info">
+    <div class="avatar">{{ getAvatarLetter() }}</div>
+    {{ getEmail() }} ({{ getRole() }})
+  </span>
+
+  <button class="logout" (click)="logout($event)">Logout</button>
+</nav>
+
+<hr />
+<!-- ✅ Routed components (Tasks, Audit, Login) will render here -->
+<router-outlet></router-outlet>
+

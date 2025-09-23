@@ -1,0 +1,53 @@
+<h2>Tasks</h2>
+
+<!-- Create Task -->
+<form (ngSubmit)="addTask()" *ngIf="canEdit()" class="task-form">
+  <input [(ngModel)]="newTaskTitle" name="title" placeholder="Task title" required>
+  <input [(ngModel)]="newTaskDesc" name="desc" placeholder="Task description">
+
+  <select [(ngModel)]="newTaskCategory" name="category">
+    <option value="Work">Work</option>
+    <option value="Personal">Personal</option>
+    <option value="General">General</option>
+  </select>
+
+  <button type="submit">➕ Add</button>
+</form>
+
+<!-- Category Filter -->
+<div class="filters">
+  <label>
+    Filter:
+    <select [(ngModel)]="filterCategory" (change)="applyFilter()" name="filter">
+      <option value="ALL">All</option>
+      <option value="Work">Work</option>
+      <option value="Personal">Personal</option>
+      <option value="General">General</option>
+    </select>
+  </label>
+</div>
+
+<!-- Task List -->
+<div cdkDropList (cdkDropListDropped)="drop($event)" class="task-list">
+  <div
+    *ngFor="let task of filteredTasks"
+    cdkDrag
+    class="task-item"
+    [ngClass]="task.category.toLowerCase()"
+  >
+    <div class="task-header">
+      <span class="category-label">{{ task.category }}</span>
+      <strong>{{ task.title }}</strong>
+    </div>
+    <p *ngIf="task.description">{{ task.description }}</p>
+    <small>Status: {{ task.status }}</small>
+
+    <div class="actions" *ngIf="canEdit()">
+      <button (click)="changeStatus(task, 'IN_PROGRESS')">⏳</button>
+      <button (click)="changeStatus(task, 'DONE')">✅</button>
+      <button (click)="deleteTask(task.id)">🗑</button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="loading" class="loading">⏳ Loading...</div>

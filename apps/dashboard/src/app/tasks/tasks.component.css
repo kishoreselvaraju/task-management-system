@@ -1,0 +1,92 @@
+/* Base styles */
+.task-form {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-wrap: wrap; /* 👈 allows wrapping on small screens */
+  gap: 0.5rem;
+}
+
+.task-form input,
+.task-form select,
+.task-form button {
+  flex: 1 1 auto; /* 👈 flex-grow, shrink, auto width */
+  min-width: 120px;
+}
+
+.filters {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.task-item {
+  padding: 0.75rem;
+  border-radius: 6px;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  transition: transform 0.2s;
+}
+
+.task-header {
+  display: flex;
+  flex-wrap: wrap; /* 👈 makes title and category wrap on small screens */
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.25rem;
+}
+
+.category-label {
+  font-size: 12px;
+  font-weight: bold;
+  color: #555;
+}
+
+.actions {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+
+/* Mobile*/
+@media (max-width: 600px) {
+  .task-form {
+    flex-direction: column;
+  }
+
+  .task-form input,
+  .task-form select,
+  .task-form button {
+    width: 100%;
+  }
+
+  .task-item {
+    font-size: 14px;
+  }
+
+  .actions button {
+    font-size: 14px;
+  }
+}
+
+/*  Tablet and up */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .task-item {
+    font-size: 15px;
+  }
+}
+
+/*  Desktop */
+@media (min-width: 1025px) {
+  .task-list {
+    max-width: 800px;
+    margin: 0 auto; /* center on large screens */
+  }
+}

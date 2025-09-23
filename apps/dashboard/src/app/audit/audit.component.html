@@ -1,0 +1,45 @@
+<h2>Audit Timeline</h2>
+
+<!-- Filters -->
+<div class="filters">
+  <label>
+    Action:
+    <select [(ngModel)]="selectedAction" (change)="applyFilters()">
+      <option value="ALL">All</option>
+      <option value="create_task">Create</option>
+      <option value="update_task">Update</option>
+      <option value="delete_task">Delete</option>
+    </select>
+  </label>
+
+  <label>
+    Date:
+    <select [(ngModel)]="selectedDate" (change)="applyFilters()">
+      <option value="ALL">All</option>
+      <option value="TODAY">Today</option>
+      <option value="YESTERDAY">Yesterday</option>
+    </select>
+  </label>
+</div>
+
+<div *ngIf="loading" class="loading">⏳ Loading logs...</div>
+
+<div *ngIf="!loading && groupedLogs.length > 0; else noLogs">
+  <div *ngFor="let group of groupedLogs" class="date-group">
+    <h3 class="date-header">{{ group.date }}</h3>
+    <ul class="audit-timeline">
+      <li *ngFor="let log of group.items" class="timeline-item" [ngClass]="log.action">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <strong>{{ log.action.replace('_', ' ') }}</strong>
+          <p>User {{ log.userId }} → {{ log.resource }}</p>
+          <small>{{ log.createdAt | date: 'shortTime' }}</small>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<ng-template #noLogs>
+  <p class="empty">📝 No audit entries match your filter.</p>
+</ng-template>

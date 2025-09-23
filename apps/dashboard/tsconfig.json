@@ -3,6 +3,7 @@
   "compilerOptions": {
     "strict": true,
     "noImplicitOverride": true,
+    "types": ["jest", "node"],
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
