@@ -38,7 +38,7 @@ export class TasksService {
   // CREATE
   async create(user: User, dto: Partial<Task>) {
     const fullUser = await this.userRepo.findOne({
-      where: { id: user.id },
+      where: { email: user.email },
       relations: ['organization'],
     });
     if (!fullUser) throw new NotFoundException('User not found');

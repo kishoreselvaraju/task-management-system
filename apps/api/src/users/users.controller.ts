@@ -15,7 +15,7 @@ import { Request } from 'express';
 import { User } from '../entities/user.entity';
 
 @Controller('users')
-@UseGuards(JwtAuthGuard) // ✅ all endpoints protected
+@UseGuards(JwtAuthGuard) // all endpoints protected
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
