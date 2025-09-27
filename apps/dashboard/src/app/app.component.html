@@ -1,7 +1,10 @@
 <nav *ngIf="isLoggedIn()" class="navbar">
-  <button routerLink="/tasks" routerLinkActive="active">Tasks</button>
-  <button *ngIf="isAdminOrOwner()" routerLink="/audit" routerLinkActive="active">Audit</button>
-  <button *ngIf="isAdmin()" routerLink="/users" routerLinkActive="active">Users</button> 
+  <button type="button" routerLink="/tasks" routerLinkActive="active"
+  [routerLinkActiveOptions]="{ exact: true }">Tasks</button>
+<button *ngIf="isAdminOrOwner()" type="button" routerLink="/audit" routerLinkActive="active"
+[routerLinkActiveOptions]="{ exact: true }">Audit</button>
+<button *ngIf="isAdmin()" type="button" routerLink="/users" routerLinkActive="active"
+[routerLinkActiveOptions]="{ exact: true }">Users</button>
   <span class="user-info">
     <div class="avatar">{{ getAvatarLetter() }}</div>
     {{ getEmail() }} ({{ getRole() }})
