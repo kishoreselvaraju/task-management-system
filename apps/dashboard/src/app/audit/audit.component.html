@@ -6,9 +6,9 @@
     Action:
     <select [(ngModel)]="selectedAction" (change)="applyFilters()">
       <option value="ALL">All</option>
-      <option value="create_task">Create</option>
-      <option value="update_task">Update</option>
-      <option value="delete_task">Delete</option>
+      <option value="CREATE_TASK">Create</option>
+      <option value="UPDATE_TASK">Update</option>
+      <option value="DELETE_TASK">Delete</option>
     </select>
   </label>
 
@@ -32,7 +32,7 @@
         <div class="timeline-dot"></div>
         <div class="timeline-content">
           <strong>{{ log.action.replace('_', ' ') }}</strong>
-          <p>User {{ log.userId }} → {{ log.resource }}</p>
+          <p>User {{ log.user?.email || 'Unknown' }} → {{ log.resource }}</p>
           <small>{{ log.createdAt | date: 'shortTime' }}</small>
         </div>
       </li>

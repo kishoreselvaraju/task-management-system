@@ -28,12 +28,18 @@ export class AuthService {
     return !!localStorage.getItem('access_token');
   }
 
-  getRole(): string | null {
+  getRole(): string {
     const token = localStorage.getItem('access_token');
-    if (!token) return null;
-    const decoded = this.jwtHelper.decodeToken(token);
-    return decoded?.role || null;
+    if (!token) return '';
+  
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.role || '';
+    } catch {
+      return '';
+    }
   }
+  
 
   getEmail(): string | null {
     const token = localStorage.getItem('access_token');

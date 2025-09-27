@@ -13,29 +13,34 @@ import { AuthService } from './auth.service';
 export class AppComponent {
   constructor(private auth: AuthService, private router: Router) {}
 
-  isLoggedIn() {
+  isLoggedIn(): boolean {
     return this.auth.isLoggedIn();
   }
 
-  getRole() {
-    return this.auth.getRole();
+  getRole(): string {
+    return this.auth.getRole() ?? '';
   }
+  
 
-  getEmail() {
+  getEmail(): string | null {
     return this.auth.getEmail();
   }
 
-  getAvatarLetter() {
+  getAvatarLetter(): string {
     const email = this.getEmail();
     return email ? email.charAt(0).toUpperCase() : '?';
   }
 
-  isAdminOrOwner() {
-    const role = this.auth.getRole();
+  isAdmin(): boolean {
+    return this.getRole() === 'ADMIN';
+  }
+
+  isAdminOrOwner(): boolean {
+    const role = this.getRole();
     return role === 'ADMIN' || role === 'OWNER';
   }
 
-  logout(event: Event) {
+  logout(event: Event): void {
     event.preventDefault();
     this.auth.logout();
     this.router.navigate(['/login']);

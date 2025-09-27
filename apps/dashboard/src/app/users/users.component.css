@@ -1,0 +1,32 @@
+/* apps/dashboard/src/app/users/users.component.css */
+.users-container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+  }
+  
+  .user-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  .user-table th,
+  .user-table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .user-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .user-form input,
+  .user-form select,
+  .user-form button {
+    padding: 8px;
+  }
+  

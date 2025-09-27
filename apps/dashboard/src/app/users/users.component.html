@@ -1,0 +1,66 @@
+<!-- apps/dashboard/src/app/users/users.component.html -->
+<div class="users-container" *ngIf="isAdmin(); else noAccess">
+    <h2>👤 User Management</h2>
+  
+    <!-- Loading -->
+    <div *ngIf="loading">Loading users...</div>
+  
+    <!-- User table -->
+    <table *ngIf="!loading" class="user-table">
+      <thead>
+        <tr>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Organization</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let u of users">
+          <td>{{ u.email }}</td>
+          <td>
+            <ng-container *ngIf="editingUserId !== u.id; else editRole">
+              {{ u.role }}
+            </ng-container>
+            <ng-template #editRole>
+              <select [(ngModel)]="editingRole">
+                <option value="VIEWER">Viewer</option>
+                <option value="OWNER">Owner</option>
+                <option value="ADMIN">Admin</option>
+              </select>
+            </ng-template>
+          </td>
+          <td>{{ u.organization?.name }}</td>
+          <td>
+            <ng-container *ngIf="editingUserId !== u.id; else editButtons">
+              <button (click)="startEdit(u)">Edit</button>
+              <button (click)="deleteUser(u.id)">Delete</button>
+            </ng-container>
+            <ng-template #editButtons>
+              <button (click)="saveEdit(u)">Save</button>
+              <button (click)="cancelEdit()">Cancel</button>
+            </ng-template>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <!-- Create user -->
+    <h3>Create New User</h3>
+    <form (ngSubmit)="createUser()" class="user-form">
+      <input [(ngModel)]="newEmail" name="email" placeholder="Email" required />
+      <input [(ngModel)]="newPassword" name="password" placeholder="Password" required type="password" />
+      <select [(ngModel)]="newRole" name="role">
+        <option value="VIEWER">Viewer</option>
+        <option value="OWNER">Owner</option>
+        <option value="ADMIN">Admin</option>
+      </select>
+      <input [(ngModel)]="newOrg" name="organization" placeholder="Organization ID/ Name" />
+      <button type="submit">Create User</button>
+    </form>
+  </div>
+  
+  <ng-template #noAccess>
+    <p>❌ You are not authorized to view this page.</p>
+  </ng-template>
+  

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../entities/user.entity';
@@ -12,22 +12,32 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(email: string, password: string) {
+  async validateUser(email: string, password: string): Promise<User> {
+    console.log(' Trying login for', email); /// Debug
     const user = await this.userRepo.findOne({ where: { email } });
-    if (!user) return null;
+    console.log('Found user in DB:', user); ///Debug
+    if (!user) throw new UnauthorizedException('Invalid credentials');
+  
     const isMatch = await bcrypt.compare(password, user.password);
-    return isMatch ? user : null;
+    console.log('Password match:', isMatch); ///Debug
+  
+    if (!isMatch) throw new UnauthorizedException('Invalid credentials');
+    return user;
   }
+  
 
-  async login(user: User) {
-    const payload = { sub: user.id, email: user.email, role: user.role };
-    return {
-      access_token: this.jwtService.sign({
-        sub: user.id,
-        email: user.email,
-        role: user.role,
-      }),
+  async login(email: string, password: string) {
+    const user = await this.validateUser(email, password);
+
+    const payload = {
+      sub: user.id,
+      email: user.email,
+      role: user.role,
+      organizationId: user.organization?.id,
     };
-    
+
+    return {
+      access_token: this.jwtService.sign(payload),
+    };
   }
 }

@@ -5,15 +5,15 @@
 
 
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app/app.module';
+import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // 👇 global /api prefix
+  //  global /api prefix
   app.setGlobalPrefix('api');
 
-  // 👇 proper CORS setup
+  // proper CORS setup
   app.enableCors({
     origin: 'http://localhost:4200', // allow Angular dev server
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',

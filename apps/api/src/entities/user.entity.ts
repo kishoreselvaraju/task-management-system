@@ -1,23 +1,18 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  OneToMany,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
 import { Organization } from './organization.entity';
 import { Task } from './task.entity';
+import { AuditLog } from './audit-log.entity';
 
 export enum Role {
-  OWNER = 'OWNER',
   ADMIN = 'ADMIN',
+  OWNER = 'OWNER',
   VIEWER = 'VIEWER',
 }
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ unique: true })
   email: string;
@@ -25,15 +20,18 @@ export class User {
   @Column()
   password: string;
 
-  @Column({
-    type: 'text',
-    default: Role.VIEWER,
-  })
+  @Column({ type: 'text', enum: Role })
   role: Role;
 
-  @ManyToOne(() => Organization, (org) => org.users, { eager: true })
+  @ManyToOne(() => Organization, (org) => org.users, {
+    eager: true,
+    onDelete: 'SET NULL', // keeping the organization but not user
+  })
   organization: Organization;
 
-  @OneToMany(() => Task, (task) => task.owner)   
+  @OneToMany(() => Task, (task) => task.owner)
   tasks: Task[];
+
+  @OneToMany(() => AuditLog, (log) => log.user)
+  auditLogs: AuditLog[];
 }

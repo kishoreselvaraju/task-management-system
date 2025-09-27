@@ -6,11 +6,13 @@ import { AuditService } from './audit.service';
 import { AuditController } from './audit.controller';
 import { AuditGateway } from './audit.gateway';
 import { AuthModule } from '../auth/auth.module';
+import { User } from '../entities/user.entity';
+import { Task } from '../entities/task.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([AuditLog]),
-    forwardRef(() => AuthModule),   // ✅ reuse the same JwtModule from AuthModule
+    TypeOrmModule.forFeature([AuditLog, User, Task]),
+    forwardRef(() => AuthModule),   // reuse the same JwtModule from AuthModule
   ],
   providers: [AuditService, AuditGateway],
   controllers: [AuditController],

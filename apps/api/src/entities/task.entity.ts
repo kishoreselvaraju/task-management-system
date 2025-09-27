@@ -32,8 +32,10 @@ export class Task {
 category: string;
 
 
-  @ManyToOne(() => User, (user) => user.tasks, { eager: true })
-  owner: User;
+@ManyToOne(() => User, (user) => user.tasks, {
+  onDelete: 'SET NULL',
+})
+owner: User;
 
   @ManyToOne(() => Organization, (org) => org.tasks, { eager: true })
   organization: Organization;

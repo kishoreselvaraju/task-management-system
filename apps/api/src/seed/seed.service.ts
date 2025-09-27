@@ -11,6 +11,7 @@ export class SeedService implements OnModuleInit {
     @InjectRepository(Organization) private orgRepo: Repository<Organization>,
     @InjectRepository(User) private userRepo: Repository<User>,
   ) {}
+  
 
   async onModuleInit() {
     const orgCount = await this.orgRepo.count();
@@ -44,6 +45,6 @@ export class SeedService implements OnModuleInit {
 
     await this.userRepo.save([owner, admin, viewer]);
 
-    console.log('✅ Seed complete: Users created -> owner@acme.com / admin@acme.com / viewer@acme.com (all password123)');
+    console.log('Seed complete: Users created -> owner@acme.com / admin@acme.com / viewer@acme.com (all password123)');
   }
 }
