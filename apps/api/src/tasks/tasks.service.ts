@@ -64,7 +64,7 @@ export class TasksService {
   // UPDATE
   async update(id: string, dto: Partial<Task>, user: User) {
     const fullUser = await this.userRepo.findOne({
-      where: { id: user.id },
+      where: { email: user.email },
       relations: ['organization'],
     });
     if (!fullUser) throw new NotFoundException('User not found');
@@ -100,7 +100,7 @@ export class TasksService {
   //  DELETE
   async remove(id: string, user: User) {
     const fullUser = await this.userRepo.findOne({
-      where: { id: user.id },
+      where: { email: user.email },
       relations: ['organization'],
     });
     if (!fullUser) throw new NotFoundException('User not found');
